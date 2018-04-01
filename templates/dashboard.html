@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <h1>ALL TASKS <small> You have the following tasks to get done <b>{{session.username}}</b>.</small></h1>
+    <h3>You can get all you json data <a href="#jsonData">here</a></h3>
+  <a class="btn btn-success" href="/add_article"> Add Article</a>
+  <hr/>
+  <table class="table table-striped">
+    {% for article in articles %}
+        <tr>
+        <div class="job">
+          <div class="top">
+              <a href="edit_article/{{article.id}}" class="btn btn-default pull-right">View/Edit</a>
+          </div>
+            <h2>{{article.title}}</h2><hr/>
+            <h5><b>ID:</b> &nbsp {{article.id}} </h5>
+            <h5><b>CREATOR:</b> &nbsp {{article.author}} </h5>
+            <h5><b>CATEGORY:</b> &nbsp{{article.category}} </h5><hr/>
+            <time><b>DATE CREATED:</b> &nbsp{{article.CreateDate}}</time>
+            <form action="{{url_for('delete_article', id=article.id)}}" method="post">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="submit" value="Delete" class="btn btn-danger">
+            </form>
+        </div>
+        </tr>
+    {% endfor %}
+      <div id="wrapper">
+            <h2>THIS IS ALL YOUR DATA IN JSON.</h2>
+            <textarea class="tarea"  id="jsonData">{{jsonData}}</textarea>
+        </form>
+      </div>
+  </table>
+{% endblock %}

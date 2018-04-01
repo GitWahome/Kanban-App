@@ -1,0 +1,18 @@
+{% extends 'layout.html' %}
+{% block body %}
+  <h1>Paste in your JSON as follows:</h1>
+    <h2>THIS IS A VALID SINGLE ENTRY: </h2>
+    <h2><b>{"1": {'title': 'Entry 1', 'body': 'This is the description for the first entry', 'category': 'TODO'}}</b></h2>
+    <h2>THIS IS A VALID MULTI ENTRY: </h2>
+    <h2><b>{"1": {'title': 'Entry 1', 'body': 'This is the description for the first entry', 'category': 'TODO'}, </b></h2>
+    <h2><b>"2": {'title': 'Entry 2', 'body': 'This is the description for the second entry', 'category': 'DOING'},</b></h2>
+    <h2><b>"3": {'title': 'Entry 3', 'body': 'This is the description for the third entry', 'category': 'DONE'}}</b></h2>
+  {% from "includes/_formhelpers.html" import render_field %}
+  <form method="POST" action="">
+      <h3><b>ADD YOUR JSON HERE.</b></h3>
+     <div class="form-group">
+      {{ render_field(form.body, class_="form-control", id="editor") }}
+    </div>
+    <p><input class="btn btn-primary" type="submit" value="Submit">
+  </form>
+{% endblock %}

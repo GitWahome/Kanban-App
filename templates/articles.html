@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <h1>THESE ARE ALL YOUR DONE TASKS.</h1>
+    <heading>ALL TASKS</heading>
+    <table class="table table-striped">
+        {% for article in articles %}
+          <tr>
+                <div class="job">
+                  <div class="top">
+                      <a href="edit_article/{{article.id}}" class="btn btn-default pull-right">View/Edit</a>
+                  </div>
+                    <h4>{{article.title}}</h4><hr/>
+                    <h5><b>CREATOR:</b> &nbsp {{article.author}} </h5>
+                    <h5><b>PROGRESS:</b> &nbsp{{article.category}} </h5><hr/>
+                    <p>
+                        <b>TASK: </b><em>{{article.body}}</em>
+                    </p>
+                    <time><b>DATE CREATED:</b> &nbsp{{article.CreateDate}}</time>
+                    <form action="{{url_for('delete_article', id=article.id)}}" method="post">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="submit" value="Delete" class="btn btn-danger">
+                    </form>
+                </div>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

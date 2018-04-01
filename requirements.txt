@@ -1,0 +1,8 @@
+unittest>=1.0
+wtforms>=1.0
+flask>=0.08
+hashlib
+uuid
+functools
+datetime
+flask_sqlalchemy

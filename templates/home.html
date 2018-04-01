@@ -1,0 +1,113 @@
+{% extends 'layout.html' %}
+{% block body %}
+    <h1> Welcome {{session.username}}</h1>
+    <a class="btn btn-success" href="/add_article"> Add Article</a>
+    <hr/>
+    <!--In here the Kanban-->
+    <div id="board">
+      <div class="column backlog">
+        <heading>ALL TASKS</heading>
+          <table class="table table-striped">
+          {% for article in articles %}
+          <tr>
+                <div class="job">
+                  <div class="top">
+                      <a href="edit_article/{{article.id}}" class="btn btn-default pull-right">View/Edit</a>
+                  </div>
+                    <h2>{{article.title}}</h2><hr/>
+                    <h5><b>ID:</b> &nbsp {{article.id}} </h5>
+                    <h5><b>CREATOR:</b> &nbsp {{article.author}} </h5>
+                    <h5><b>CATEGORY:</b> &nbsp{{article.category}} </h5><hr/>
+                    <time><b>DATE CREATED:</b> &nbsp{{article.CreateDate}}</time>
+                    <form action="{{url_for('delete_article', id=article.id)}}" method="post">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="submit" value="Delete" class="btn btn-danger">
+                    </form>
+                </div>
+            </tr>
+          {% endfor %}
+          </table>
+      </div><!-- column -->
+
+      <div class="column todo">
+        <heading>TODO</heading>
+                  <table class="table table-striped">
+          {% for article in todo %}
+          <tr>
+                <div class="job">
+                    <img src="../static/emoji_tasks/sad.jpg" alt="this image need to select" />
+                  <div class="top">
+                      <a href="edit_article/{{article.id}}" class="btn btn-default pull-right">View/Edit</a>
+                  </div>
+                    <h2>{{article.title}}</h2><hr/>
+                    <h5><b>ID:</b> &nbsp {{article.id}} </h5>
+                    <h5><b>CREATOR:</b> &nbsp {{article.author}} </h5>
+                    <h5><b>CATEGORY:</b> &nbsp{{article.category}} </h5><hr/>
+                    <time><b>DATE CREATED:</b> &nbsp{{article.CreateDate}}</time>
+                    <form action="{{url_for('delete_article', id=article.id)}}" method="post">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="submit" value="Delete" class="btn btn-danger">
+                    </form>
+                </div>
+            </tr>
+          {% endfor %}
+          </table>
+      </div><!-- column -->
+
+    <div class="column doing">
+        <heading>DOING</heading>
+        <table class="table table-striped">
+          {% for article in doing %}
+          <tr>
+                <div class="job">
+                    <img src="../static/emoji_tasks/smiley.jpg" alt="this image need to select"/>
+                  <div class="top">
+                      <a href="edit_article/{{article.id}}" class="btn btn-default pull-right">View/Edit</a>
+                  </div>
+                    <h2>{{article.title}}</h2><hr/>
+                    <h5><b>ID:</b> &nbsp {{article.id}} </h5>
+                    <h5><b>CREATOR:</b> &nbsp {{article.author}} </h5>
+                    <h5><b>CATEGORY:</b> &nbsp{{article.category}} </h5><hr/>
+                    <time><b>DATE CREATED:</b> &nbsp{{article.CreateDate}}</time>
+                    <form action="{{url_for('delete_article', id=article.id)}}" method="post">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="submit" value="Delete" class="btn btn-danger">
+                    </form>
+                </div>
+            </tr>
+          {% endfor %}
+          </table>
+      </div><!-- column -->
+
+    <div class="column done">
+        <heading>DONE</heading>
+                  <table class="table table-striped">
+          {% for article in done %}
+          <tr>
+                <div class="job">
+                    <img src="../static/emoji_tasks/excited.jpg" alt="this image need to select"/>
+                  <div class="top">
+                      <a href="edit_article/{{article.id}}" class="btn btn-default pull-right">View/Edit</a>
+                  </div>
+                    <h2>{{article.title}}</h2><hr/>
+                    <h5><b>ID:</b> &nbsp {{article.id}} </h5>
+                    <h5><b>CREATOR:</b> &nbsp {{article.author}} </h5>
+                    <h5><b>CATEGORY:</b> &nbsp{{article.category}} </h5><hr/>
+                    <time><b>DATE CREATED:</b> &nbsp{{article.CreateDate}}</time>
+                    <form action="{{url_for('delete_article', id=article.id)}}" method="post">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="submit" value="Delete" class="btn btn-danger">
+                    </form>
+                </div>
+            </tr>
+          {% endfor %}
+          </table>
+      </div><!-- column -->
+    </div>
+    <!--End here the Kanban-->
+    <hr/>
+    {% if session.logged_in == NULL %}
+              <a href="/register" class="btn btn-primary btn-lg">Register</a>
+              <a href="/login" class="btn btn-success btn-lg">Login</a>
+        {% endif %}
+{% endblock %}
