@@ -77,7 +77,7 @@ def dictize(raw):
     return tuple(list)
 #I want to eliminate this function by fetching the data needed with individual queries from the DB.
 @is_logged_in
-def fetchUserInfo(inquirySet):
+def fetchUserInfo():
     """"
     raw=dictize(raw)
     articles,todo, doing, done =[],[],[],[]
@@ -93,13 +93,21 @@ def fetchUserInfo(inquirySet):
             articles.append(article)
     return tuple(articles), tuple(todo), tuple(doing), tuple(done)
     """
-    #results={}
-    myArticles = myarticles.query.having(author=session['username'])
-    print("These are the intermediate results")
-    print(myArticles)
-    #for vals in inquirySet:
+    articles, todo, doing, done = [], [], [], []
+    results={}
+    print("Let us see the whole result set as is retrieved.")
+    #print(myarticles.query.filter_by(author=session['username']))
+    myArticles = dictize(myarticles.query.filter_by(author=session['username']))
+    for article in myArticles:
+        if article["category"] == "TODO":
+            todo.append(article)
+        elif article["category"]=="DOING":
+            doing.append(article)
+        else:
+            done.append(article)
+        articles.append(article)
+    return tuple(articles), tuple(todo), tuple(doing), tuple(done)
 
-    return None
 # Index
 # Check if user logged in
 @app.route('/')
@@ -107,10 +115,10 @@ def fetchUserInfo(inquirySet):
 #This is the home Kanban board, my board.
 def index():
     # Get articles
-    inquirySet=["title","author","body","category","CreateDate"]
-    Articles, todo, doing, done = fetchUserInfo(inquirySet)
-    if len(raw) > 0:
-        return render_template('home.html', articles=articles, todo=todo, doing=doing, done=done)
+
+    Articles, todo, doing, done = fetchUserInfo()
+    if len(Articles) > 0:
+        return render_template('home.html', articles=Articles, todo=todo, doing=doing, done=done)
     else:
         msg = 'No Articles Found'
         return render_template('home.html', msg=msg)
@@ -169,8 +177,7 @@ def about():
 def articles():
     # Create cursor
     # Get articles
-    raw = myarticles.query.all()
-    articles,todo,doing,done = fetchUserInfo(raw)
+    articles,todo,doing,done = fetchUserInfo()
     if len(articles) > 0:
 
         return render_template('articles.html', articles=done)
@@ -183,6 +190,7 @@ def articles():
 @is_logged_in
 def article(id):
     raw = myarticles.query.all()
+
     #articles, todo, doing, done = db.session.query(User, article, todo, doing, done).filter_by(username = username)
     articles, todo, doing, done =fetchUserInfo(raw)
     return render_template('article.html', article=articles)
@@ -254,8 +262,7 @@ def dashboard():
     # Create cursor
     # Get articles
     myArticles={}
-    raw = myarticles.query.all()
-    articles, todo, doing, done = fetchUserInfo(raw)
+    articles, todo, doing, done = fetchUserInfo()
     count=1
     for tasks in articles:
         task={'title':tasks['title'], 'body':tasks['body'], 'category':tasks['category'], 'author':tasks['author']}
