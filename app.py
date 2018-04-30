@@ -75,9 +75,10 @@ def dictize(raw):
         list.append(all.__dict__)
     print(list)
     return tuple(list)
-
+#I want to eliminate this function by fetching the data needed with individual queries from the DB.
 @is_logged_in
-def categorizerAndUserFilter(raw):
+def fetchUserInfo(inquirySet):
+    """"
     raw=dictize(raw)
     articles,todo, doing, done =[],[],[],[]
     for article in raw:
@@ -91,6 +92,14 @@ def categorizerAndUserFilter(raw):
             done.append(article)
             articles.append(article)
     return tuple(articles), tuple(todo), tuple(doing), tuple(done)
+    """
+    #results={}
+    myArticles = myarticles.query.having(author=session['username'])
+    print("These are the intermediate results")
+    print(myArticles)
+    #for vals in inquirySet:
+
+    return None
 # Index
 # Check if user logged in
 @app.route('/')
@@ -98,8 +107,8 @@ def categorizerAndUserFilter(raw):
 #This is the home Kanban board, my board.
 def index():
     # Get articles
-    raw = myarticles.query.all()
-    articles, todo, doing, done = categorizerAndUserFilter(raw)
+    inquirySet=["title","author","body","category","CreateDate"]
+    Articles, todo, doing, done = fetchUserInfo(inquirySet)
     if len(raw) > 0:
         return render_template('home.html', articles=articles, todo=todo, doing=doing, done=done)
     else:
@@ -161,7 +170,7 @@ def articles():
     # Create cursor
     # Get articles
     raw = myarticles.query.all()
-    articles,todo,doing,done = categorizerAndUserFilter(raw)
+    articles,todo,doing,done = fetchUserInfo(raw)
     if len(articles) > 0:
 
         return render_template('articles.html', articles=done)
@@ -174,7 +183,8 @@ def articles():
 @is_logged_in
 def article(id):
     raw = myarticles.query.all()
-    articles, todo, doing, done =categorizerAndUserFilter(raw)
+    #articles, todo, doing, done = db.session.query(User, article, todo, doing, done).filter_by(username = username)
+    articles, todo, doing, done =fetchUserInfo(raw)
     return render_template('article.html', article=articles)
 
 
@@ -245,7 +255,7 @@ def dashboard():
     # Get articles
     myArticles={}
     raw = myarticles.query.all()
-    articles, todo, doing, done = categorizerAndUserFilter(raw)
+    articles, todo, doing, done = fetchUserInfo(raw)
     count=1
     for tasks in articles:
         task={'title':tasks['title'], 'body':tasks['body'], 'category':tasks['category'], 'author':tasks['author']}

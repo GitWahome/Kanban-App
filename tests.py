@@ -12,6 +12,11 @@ class Testapp(unittest.TestCase):
     def test_jsonProcessor(self):
         test3={'title': 'Entry 1', 'body': 'This is the description for the first entry', 'category': 'TODO'}
         self.assertEqual(app.jsonProcessor(str(test3)),('Entry 1','This is the description for the first entry', 'TODO'))
+    """
+    def test_login(self):
+        self.assertEqual(app.jsonProcessor(str(test3)),
+                         ('Entry 1', 'This is the description for the first entry', 'TODO'))
 
+    """
 if __name__=="__main__":
     unittest.main()
